@@ -13,3 +13,5 @@ wheels/
 
 video_run.py
 *.avi
+
+*.mp4
