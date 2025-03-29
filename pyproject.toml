@@ -8,5 +8,9 @@ dependencies = [
     "dotenv>=0.9.9",
     "openai>=1.69.0",
     "opencv-python>=4.11.0.86",
+    "paddleocr>=2.10.0",
+    "paddlepaddle>=3.0.0",
+    "pytesseract>=0.3.13",
+    "setuptools>=78.1.0",
     "ultralytics>=8.3.98",
 ]
