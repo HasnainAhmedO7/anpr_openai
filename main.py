@@ -13,7 +13,7 @@ from paddleocr import PaddleOCR
 
 os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
 #Create a Video Capture Object
-cap = cv2.VideoCapture("anpr-demo-video.mp4")
+cap = cv2.VideoCapture("cars.mp4")
 #Initialize the YOLOv10 Model
 model = YOLO("anpr-demo-model.pt")
 #Initialize the frame count
@@ -58,35 +58,35 @@ def save_json(license_plates, startTime, endTime):
     with open(interval_file_path, 'w') as f:
         json.dump(interval_data, f, indent = 2)
 
-    #Cummulative JSON File
-    cummulative_file_path = "json/LicensePlateData.json"
-    if os.path.exists(cummulative_file_path):
-        with open(cummulative_file_path, 'r') as f:
-            existing_data = json.load(f)
-    else:
-        existing_data = []
+    # #Cummulative JSON File
+    # cummulative_file_path = "json/LicensePlateData.json"
+    # if os.path.exists(cummulative_file_path):
+    #     with open(cummulative_file_path, 'r') as f:
+    #         existing_data = json.load(f)
+    # else:
+    #     existing_data = []
 
-    #Add new intervaal data to cummulative data
-    existing_data.append(interval_data)
+    # #Add new intervaal data to cummulative data
+    # existing_data.append(interval_data)
 
-    with open(cummulative_file_path, 'w') as f:
-        json.dump(existing_data, f, indent = 2)
+    # with open(cummulative_file_path, 'w') as f:
+    #     json.dump(existing_data, f, indent = 2)
 
     #Save data to SQL database
-    save_to_database(license_plates, startTime, endTime)
+    # save_to_database(license_plates, startTime, endTime)
 
 
 
-def save_to_database(license_plates, start_time, end_time):
-    conn = sqlite3.connect('licensePlatesDatabase.db')
-    cursor = conn.cursor()
-    for plate in license_plates:
-        cursor.execute('''
-            INSERT INTO LicensePlates(start_time, end_time, license_plate)
-            VALUES (?, ?, ?)
-        ''', (start_time.isoformat(), end_time.isoformat(), plate))
-    conn.commit()
-    conn.close()
+# def save_to_database(license_plates, start_time, end_time):
+#     conn = sqlite3.connect('licensePlatesDatabase.db')
+#     cursor = conn.cursor()
+#     for plate in license_plates:
+#         cursor.execute('''
+#             INSERT INTO LicensePlates(start_time, end_time, license_plate)
+#             VALUES (?, ?, ?)
+#         ''', (start_time.isoformat(), end_time.isoformat(), plate))
+#     conn.commit()
+#     conn.close()
 
 
 
@@ -123,11 +123,18 @@ while True:
             save_json(license_plates, startTime, endTime)
             startTime = currentTime
             license_plates.clear()
-        cv2.imshow("Video", frame)
-        if cv2.waitKey(1) & 0xFF == ord('1'):
+        cv2.namedWindow("Frame",cv2.WINDOW_NORMAL)
+        cv2.imshow("Frame", frame)
+
+        key = cv2.waitKey(1)
+        
+        if key == ord("q"):
+            cv2.waitKey(1)
             break
-    else:
-        break
+
+        if key == ord("p"):
+            cv2.waitKey(0)
+
 
 
     
