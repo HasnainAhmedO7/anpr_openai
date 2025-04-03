@@ -5,6 +5,7 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
+    "dill>=0.3.9",
     "dotenv>=0.9.9",
     "openai>=1.69.0",
     "opencv-python>=4.11.0.86",
