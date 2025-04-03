@@ -11,11 +11,12 @@ from datetime import datetime
 # from paddleocr import 
 from paddleocr import PaddleOCR
 
-os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
+# os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
 #Create a Video Capture Object
 cap = cv2.VideoCapture("cars.mp4")
 #Initialize the YOLOv10 Model
-model = YOLO("anpr-demo-model.pt")
+# model = YOLO("anpr-demo-model.pt")
+model = YOLO("best.pt")
 #Initialize the frame count
 count = 0
 #Class Names
@@ -47,16 +48,16 @@ def paddle_ocr(frame, x1, y1, x2, y2):
 
 
 
-def save_json(license_plates, startTime, endTime):
-    #Generate individual JSON files for each 20-second interval
-    interval_data = {
-        "Start Time": startTime.isoformat(),
-        "End Time": endTime.isoformat(),
-        "License Plate": list(license_plates)
-    }
-    interval_file_path = "json/output_" + datetime.now().strftime("%Y%m%d%H%M%S") + ".json"
-    with open(interval_file_path, 'w') as f:
-        json.dump(interval_data, f, indent = 2)
+# def save_json(license_plates, startTime, endTime):
+#     #Generate individual JSON files for each 20-second interval
+#     interval_data = {
+#         "Start Time": startTime.isoformat(),
+#         "End Time": endTime.isoformat(),
+#         "License Plate": list(license_plates)
+#     }
+#     interval_file_path = "json/output_" + datetime.now().strftime("%Y%m%d%H%M%S") + ".json"
+#     with open(interval_file_path, 'w') as f:
+#         json.dump(interval_data, f, indent = 2)
 
     # #Cummulative JSON File
     # cummulative_file_path = "json/LicensePlateData.json"
@@ -120,7 +121,7 @@ while True:
                 cv2.putText(frame, label, (x1, y1 - 2), 0, 0.5, [255,255,255], thickness=1, lineType=cv2.LINE_AA)
         if (currentTime - startTime).seconds >= 20:
             endTime = currentTime
-            save_json(license_plates, startTime, endTime)
+            # save_json(license_plates, startTime, endTime)
             startTime = currentTime
             license_plates.clear()
         cv2.namedWindow("Frame",cv2.WINDOW_NORMAL)
